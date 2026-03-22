@@ -25,7 +25,7 @@ int main(){
     printf("\n");
    }
    
-if(kbhit()){
+if(kbhit()){ //keyboard movement
    char ch=getch();
    if(ch=='d')
    dir=RIGHT;
@@ -42,10 +42,15 @@ else if(dir == LEFT) x--;
 else if(dir == UP)y--;
 else if(dir == DOWN)y++;
 
-if(x == width-1)x = 1;
-if(x==0)x=width-2;
-if(y == height-1)y = 1;
-if(y==0)y=height-2;
+// if(x == width-1)x = 1;
+// if(x==0)x=width-2;
+// if(y == height-1)y = 1;
+// if(y==0)y=height-2;
+if(x == 0 || x == width-1 || y == 0 || y == height-1){
+    printf("GAME OVER\n");
+    sleep(2000);
+    break;
+}
    Sleep(300);
 }
    return 0;
