@@ -18,10 +18,62 @@ int main(){
    int foodY=rand() % (height-2)+1;
    int tailX[100],tailY[100];
    int length=0;
-  
-   while(1){ //game loop
-      system("cls");
-   for(int i=0;i<height;i++){
+  //game loop
+   while(1){ 
+
+//input
+if(kbhit()){ 
+   char ch=getch();
+   if(ch=='d'&& dir !=LEFT)
+   dir=RIGHT;
+   else if(ch=='a' && dir !=RIGHT)
+   dir=LEFT;
+   else if(ch=='w' && dir !=DOWN)
+   dir=UP;
+   else if(ch=='s' && dir !=UP)
+   dir=DOWN;
+   }
+// save pervious position
+   int prevX=x; 
+   int prevY=y;
+//move head
+ if(dir == RIGHT)x++;
+else if(dir == LEFT) x--;
+else if(dir == UP)y--;
+else if(dir == DOWN)y++;
+//food logic
+if(x==foodX&&y==foodY){ 
+   foodX=rand() % (width-2)+1;
+   foodY=rand() % (height-2)+1;
+   length++;
+}
+//update tail
+for(int i = length - 1; i > 0; i--){
+    tailX[i] = tailX[i-1];
+    tailY[i] = tailY[i-1];
+}
+
+if(length > 0){
+    tailX[0] = prevX;
+    tailY[0] = prevY;
+}
+//self collision
+for(int i = 0; i < length; i++){ 
+    if(x == tailX[i] && y == tailY[i]){
+        printf("GAME OVER\n");
+        Sleep(2000);
+        exit(0);
+    }
+}
+//wall collision
+if(x == 0 || x == width-1 || y == 0 || y == height-1){
+    printf("GAME OVER\n");
+    Sleep(2000);
+    break;
+}
+//draw
+ system("cls");
+for(int i=0;i<height;i++){
     for(int j=0;j<width;j++){
         if(i==y && j==x)
         printf("O");//snake head
@@ -48,47 +100,6 @@ int main(){
       printf("\n");
       }
    
-if(kbhit()){ //keyboard movement
-   char ch=getch();
-   if(ch=='d'&& dir !=LEFT)
-   dir=RIGHT;
-   else if(ch=='a' && dir !=RIGHT)
-   dir=LEFT;
-   else if(ch=='w' && dir !=DOWN)
-   dir=UP;
-   else if(ch=='s' && dir !=UP)
-   dir=DOWN;
-   }
-
-   int prevX=x;
-   int prevY=y;
-   
- if(dir == RIGHT)x++;
-else if(dir == LEFT) x--;
-else if(dir == UP)y--;
-else if(dir == DOWN)y++;
-
-if(x==foodX&&y==foodY){ //eating condition
-   foodX=rand() % (width-2)+1;
-   foodY=rand() % (height-2)+1;
-   length++;
-}
-
-for(int i = length - 1; i > 0; i--){
-    tailX[i] = tailX[i-1];
-    tailY[i] = tailY[i-1];
-}
-
-if(length > 0){
-    tailX[0] = prevX;
-    tailY[0] = prevY;
-}
-
-if(x == 0 || x == width-1 || y == 0 || y == height-1){
-    printf("GAME OVER\n");
-    Sleep(2000);
-    break;
-}
    Sleep(300);
 }
    return 0;
