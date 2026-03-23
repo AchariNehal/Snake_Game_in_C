@@ -3,23 +3,27 @@
 #include<windows.h>
 #include<conio.h>
 #include<time.h>
+
 #define RIGHT 1
 #define LEFT 2
 #define UP 3
 #define DOWN 4
 int main(){
+      srand(time(0));
+   while(1){
    int dir=RIGHT;
    int width=20;
    int height=10;
    int x=width/2; //snake column
    int y=height/2; //snake row
-   srand(time(0));
    int foodX=rand() % (width-2)+1;
    int foodY=rand() % (height-2)+1;
    int tailX[100],tailY[100];
    int length=0;
+   int score=0;
+   int gameover=0;
   //game loop
-   while(1){ 
+   while(!gameover){ 
 
 //input
 if(kbhit()){ 
@@ -46,6 +50,7 @@ if(x==foodX&&y==foodY){
    foodX=rand() % (width-2)+1;
    foodY=rand() % (height-2)+1;
    length++;
+   score++;
 }
 //update tail
 for(int i = length - 1; i > 0; i--){
@@ -60,19 +65,20 @@ if(length > 0){
 //self collision
 for(int i = 0; i < length; i++){ 
     if(x == tailX[i] && y == tailY[i]){
+        gameover=1;
         printf("GAME OVER\n");
         Sleep(2000);
-        exit(0);
     }
 }
 //wall collision
 if(x == 0 || x == width-1 || y == 0 || y == height-1){
+    gameover=1;
     printf("GAME OVER\n");
     Sleep(2000);
-    break;
 }
 //draw
  system("cls");
+ printf("Score: %d\n\n", score);
 for(int i=0;i<height;i++){
     for(int j=0;j<width;j++){
         if(i==y && j==x)
@@ -100,7 +106,16 @@ for(int i=0;i<height;i++){
       printf("\n");
       }
    
-   Sleep(300);
+   int speed = 300 - score * 5;
+if(speed < 50) speed = 50;
+
+Sleep(speed);
+}
+         system("cls");
+        printf("GAME OVER\n");
+        printf("Final Score: %d\n", score);
+        printf("Press any key to restart...");
+        getch();
 }
    return 0;
 } 
