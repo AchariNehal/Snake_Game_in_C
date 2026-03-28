@@ -8,8 +8,18 @@
 #define LEFT 2
 #define UP 3
 #define DOWN 4
+void gotoxy(int x, int y){
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 int main(){
       srand(time(0));
+      CONSOLE_CURSOR_INFO cursorInfo;
+        GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+        cursorInfo.bVisible = FALSE;
+        SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
    while(1){
    int dir=RIGHT;
    int width=20;
@@ -66,19 +76,15 @@ if(length > 0){
 for(int i = 0; i < length; i++){ 
     if(x == tailX[i] && y == tailY[i]){
         gameover=1;
-        printf("GAME OVER\n");
-        Sleep(2000);
     }
 }
 //wall collision
 if(x == 0 || x == width-1 || y == 0 || y == height-1){
     gameover=1;
-    printf("GAME OVER\n");
-    Sleep(2000);
 }
 //draw
- system("cls");
- printf("Score: %d\n\n", score);
+gotoxy(5,5);
+ printf("Score: %d\n", score);
 for(int i=0;i<height;i++){
     for(int j=0;j<width;j++){
         if(i==y && j==x)
@@ -111,11 +117,15 @@ if(speed < 50) speed = 50;
 
 Sleep(speed);
 }
-         system("cls");
-        printf("GAME OVER\n");
-        printf("Final Score: %d\n", score);
-        printf("Press any key to restart...");
-        getch();
-}
+       system("cls");
+printf("GAME OVER\n");
+printf("Final Score: %d\n", score);
+printf("Press any key to Restart OR Q to Quit...");
+
+char ch = getch();
+
+if(ch == 'q' || ch == 'Q'){
+    break;   // exits outer while(1)
+}}
    return 0;
 } 
